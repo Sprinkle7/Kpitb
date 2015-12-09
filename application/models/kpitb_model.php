@@ -61,6 +61,22 @@ class Kpitb_model extends CI_Model
 			return false;
 		}
 	}
+	public function MultiInsertDataintoTable($table,$Data,$IDs)
+	{
+		if (!empty($IDs)) {
+			foreach ($IDs as $EachKey) {
+				$query = $this->db->where('intial_note',$IDs);
+				$query = $this->db->insert($table,$Data);
+			}
+		}
+		if ($query) {
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	public function UpdateDataIntoDB($table,$UpdateData,$Condition)
 	{
 		$this->db->where($Condition);
@@ -136,10 +152,16 @@ class Kpitb_model extends CI_Model
 	 }
 	public function CountData($table,$Where)
 	{
-		$Query = $this->db->query("SELECT * FROM `letter` WHERE `received`='0'");
-		return $Query->num_rows();
-
+		$this->db->where($Where);
+		$Query = $this->db->select('*')->from($table);
+		$Query = $this->db->get();
+		if ($Query->num_rows()>0) {
+			return $Query->num_rows();
+		}
 	}
+
+
+	
 }
 	
 /**

@@ -28,31 +28,35 @@ class Kpitb_notes extends CI_Controller
 	}
 	public function Initiate()
 	{
-		if ($this->input->post('Letter')) {
-			$AttachmentFile = $this->kpitb_model->FileUpload('Files'); 
-			$AttachmentName    = $AttachmentFile['upload_data']['file_name'];
-			$LetterData 		= array(
-				'staff_id' 	=> $this->input->post('From'),
-				'subject' 	=> $this->input->post('Subject'),
-				'detail' 	=> $this->input->post('Details'),
-				'sendto' 	=> $this->input->post('SendTo'),
-				'attachment'		=> isset($AttachmentName) ? $AttachmentName : "",
-				'time_stamp' 	=> date("Y-m-d H-i-s")
-				);
-			$this->kpitb_model->InsertDataintoTable('letter',$LetterData);
-			$this->index();
-		}
+	if ($this->input->post('Letter')) {
+		$AttachmentFile = $this->kpitb_model->FileUpload('Files'); 
+		$SendTo = $this->input->post('SendTo');
+		$AttachmentName    = $AttachmentFile['upload_data']['file_name'];
+		$LetterData 		= array(
+			'staff_id' 	=> $this->input->post('From'),
+			'subject' 	=> $this->input->post('Subject'),
+			'detail' 	=> $this->input->post('Details'),
+			'attachment'		=> isset($AttachmentName) ? $AttachmentName : "",
+			'time_stamp' 	=> date("Y-m-d H-i-s")
+			);
+		print_r($LetterData);
+		print_r($SendTo);
+		die;
+		$this->kpitb_model->MultiInsertDataintoTable('letter',$LetterData,$SendTo);
+		$this->Initiatenote();
 	}
+	}
+
 	// // public function PostLoad()
 	// // {
 	// // 	$this->load->view('posts');
 	// // }
-	// public function CountLetter()
-	// {
-	// 	$WhereCondition = array('received'=>'0');
-	// 	$Count['one'] = $this->kpitb_model->CountData('letter',$WhereCondition);
-	// 	echo json_encode($Count);
-	// }
+	public function CountNotes()
+	{
+		$WhereCondition = array('received'=>'0');
+		$Count['one'] = $this->kpitb_model->CountData('intial_note',$WhereCondition);
+		echo json_encode($Count);
+	}
 	// public function AddComment()
 	// {
 	// 	$DataComment = array(

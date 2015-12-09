@@ -5,7 +5,7 @@ $this->load->view('parts/sidemenu');?>
 <script src="<?php echo base_url();?>assets/plugins/jquery/jquery-2.1.3.min.js"></script>
 <script>
 function loadIt() {
-  $.get('<?php echo site_url('kpitb_notes/CountLetter')?>', function(data) {
+  $.get('<?php echo site_url('kpitb_notes/CountNotes')?>', function(data) {
     var jdata = JSON.parse(data);
     $('#New').text(jdata.one);
   });
